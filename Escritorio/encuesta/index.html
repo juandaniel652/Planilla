@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Encuestas</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Iconos -->
+  <script src="https://kit.fontawesome.com/a2d3e6a6a0.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body class="bg-gray-100 text-gray-800 flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="bg-indigo-900 text-white w-64 min-w-[16rem] p-6 flex flex-col transition-transform transform -translate-x-full md:translate-x-0 fixed md:relative h-full z-50 shadow-lg">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-xl font-bold tracking-wide">🎯 Encuestas PRO</h1>
+      <button id="btnCerrarMenu" class="md:hidden text-gray-300 hover:text-white">
+        <i class="fa-solid fa-xmark text-2xl"></i>
+      </button>
+    </div>
+
+    <nav class="flex-1 space-y-2">
+      <button id="modoCreador" class="nav-btn active">🧩 Crear Campaña</button>
+      <button id="modoEvaluador" class="nav-btn">⭐ Modo Evaluador</button>
+      <button id="modoEstadisticas" class="nav-btn">📊 Estadísticas</button>
+    </nav>
+
+    <footer class="mt-auto text-xs text-gray-400 pt-4 border-t border-gray-700">
+      &copy; 2025 Encuestas PRO. Todos los derechos reservados.
+    </footer>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="flex-1 flex flex-col md:ml-64 transition-all duration-300">
+    <!-- Header -->
+    <header class="flex justify-between items-center bg-white shadow px-4 py-3 md:px-8">
+      <button id="btnAbrirMenu" class="md:hidden text-indigo-800">
+        <i class="fa-solid fa-bars text-2xl"></i>
+      </button>
+      <h2 id="tituloSeccion" class="text-lg font-semibold text-indigo-900">Panel de control</h2>
+    </header>
+
+    <!-- Contenido dinámico -->
+    <section id="contenido" class="flex-1 overflow-y-auto p-6 md:p-10">
+      <!-- Sección de creación -->
+      <div id="seccionCreador" class="hidden">
+        <button id="btnAbrir" class="btn-primary mb-4">➕ Crear Nueva Campaña</button>
+        <div id="listaCampanias" class="flex flex-wrap gap-3"></div>
+      </div>
+
+      <!-- Sección de preguntas -->
+      <section id="seccionPreguntas" class="hidden mt-8 w-full max-w-2xl bg-white p-6 rounded-2xl shadow-md">
+        <div class="flex justify-between items-center mb-4">
+          <h2 id="tituloCampania" class="text-xl font-semibold text-indigo-700"></h2>
+          <button id="btnNuevaPregunta" class="btn-secondary hidden">
+            ➕ Nueva Pregunta
+          </button>
+        </div>
+        <div id="listaPreguntas" class="flex flex-col gap-4"></div>
+        <div id="resumenEvaluacion" class="mt-6 text-center hidden"></div>
+      </section>
+
+      <!-- Sección de estadísticas -->
+      <section id="estadisticas" class="hidden mt-8 w-full max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold text-indigo-700 mb-4 text-center">📊 Estadísticas por Campaña</h2>
+        <div id="contenedorEstadisticas" class="flex flex-col gap-4 items-center"></div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Modal Crear Campaña -->
+  <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-2xl shadow-xl w-80">
+      <h2 class="text-xl font-bold text-center text-indigo-600 mb-4">Nueva Campaña</h2>
+      <form id="formCampania" class="flex flex-col gap-3">
+        <label class="font-semibold">Nombre de campaña</label>
+        <input type="text" id="nombre" required class="input-base">
+
+        <label class="font-semibold">Rango de fechas</label>
+        <div class="flex gap-2">
+          <input type="date" id="fechaInicio" required class="input-base w-1/2">
+          <input type="date" id="fechaFin" required class="input-base w-1/2">
+        </div>
+
+        <div class="flex justify-between mt-3">
+          <button type="submit" class="btn-primary">Guardar</button>
+          <button type="button" id="btnCerrar" class="btn-gray">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Nueva Pregunta -->
+  <div id="modalPregunta" class="hidden fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-2xl shadow-xl w-96">
+      <h2 class="text-xl font-bold text-center text-indigo-600 mb-4">Nueva Pregunta</h2>
+      <form id="formPregunta" class="flex flex-col gap-3">
+        <label class="font-semibold">Texto de la pregunta</label>
+        <input type="text" id="textoPregunta" required class="input-base">
+        <div class="flex justify-end mt-3">
+          <button type="submit" class="btn-secondary">Guardar</button>
+          <button type="button" id="btnCerrarPregunta" class="ml-2 btn-gray">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
