@@ -1,22 +1,22 @@
 [app]
 
 # (str) Title of your application
-title = My Application
+title = Kompra Venta
 
 # (str) Package name
-package.name = myapp
+package.name = komproventa
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = org.test
+package.domain = org.juandominguez
 
 # (str) Source code where the main.py live
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,kv,png,jpg,jpeg,db,ttf,txt,json
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns = assets/*,images/*.png
+source.include_patterns = assets/*,images/*.png, fuentes/*, database/*, actualizaciones/*
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec
@@ -29,7 +29,7 @@ source.include_exts = py,png,jpg,kv,atlas
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 1.0.0
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -37,17 +37,17 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+requirements = python3,kivy,requests,sqlite3,pyjnius
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = images/carrito_compras.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = images/carrito_compras.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
@@ -95,7 +95,7 @@ fullscreen = 0
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-#android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18)
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -257,7 +257,7 @@ fullscreen = 0
 
 # (bool) Indicate whether the screen should stay on
 # Don't forget to add the WAKE_LOCK permission if you set this to True
-#android.wakelock = False
+android.wakelock = True
 
 # (list) Android application meta-data to set (key=value format)
 #android.meta_data =
@@ -306,6 +306,21 @@ android.allow_backup = True
 
 # (str) The format used to package the app for release mode (aab or apk or aar).
 # android.release_artifact = aab
+
+# ======= FIRMA DE ANDROID =======
+
+# (str) Ruta al archivo keystore (puede ser relativa o absoluta)
+android.release_keystore = my-release-key.keystore
+
+# (str) Alias dentro del keystore
+android.release_keyalias = androidreleasekey
+
+# (str) Contraseña del keystore (la que creaste)
+android.release_keystore_pass = juankompraventa123
+
+# (str) Contraseña del alias (puede ser la misma)
+android.release_keyalias_pass = juankompraventa123
+
 
 # (str) The format used to package the app for debug mode (apk or aar).
 # android.debug_artifact = apk
