@@ -1,0 +1,153 @@
+<ProductoItem>:
+    on_release: app.root.aumentar_cantidad(root.index)
+
+    IconLeftWidget:
+        icon: "delete"
+        icon_size: "18sp"
+        on_release: app.root.eliminar_producto(root.index)
+
+    IconLeftWidget:
+        icon: "pencil"
+        icon_size: "18sp"
+        on_release: app.root.editar_producto(root.index)
+
+    IconRightWidget:
+        icon: "plus"
+        icon_size: "18sp"
+        on_release: app.root.aumentar_cantidad(root.index)
+
+    IconRightWidget:
+        icon: "minus"
+        icon_size: "18sp"
+        on_release: app.root.disminuir_cantidad(root.index)
+
+
+<EditarProducto>:
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint_y: None
+    height: "200dp"
+    md_bg_color: 0.1, 0.1, 0.1, 1
+
+    MDTextField:
+        id: nombre
+        hint_text: "Nombre del producto"
+        font_name: "Ancizar_contenido"
+        font_size: "18sp"
+        text: root.nombre
+        mode: "fill"
+        fill_color: 0.15, 0.15, 0.15, 1
+        text_color: 1, 1, 1, 1
+        hint_text_color_focus: 0, 0.9, 0.6, 1
+
+    MDTextField:
+        id: precio
+        hint_text: "Precio"
+        font_name: "Ancizar_contenido"
+        font_size: "18sp"
+        text: str(root.precio)
+        input_filter: 'float'
+        mode: "fill"
+        fill_color: 0.15, 0.15, 0.15, 1
+        text_color: 1, 1, 1, 1
+        hint_text_color_focus: 0, 0.9, 0.6, 1
+
+    MDTextField:
+        id: cantidad
+        hint_text: "Cantidad"
+        font_name: "Ancizar_contenido"
+        font_size: "18sp"
+        text: str(root.cantidad)
+        input_filter: 'int'
+        mode: "fill"
+        fill_color: 0.15, 0.15, 0.15, 1
+        text_color: 1, 1, 1, 1
+        hint_text_color_focus: 0, 0.9, 0.6, 1
+
+
+<MainApp>:
+    orientation: "vertical"
+    padding: "10dp"
+    spacing: "10dp"
+    md_bg_color: 0.05, 0.05, 0.05, 1
+
+    # ---- CABECERA ----
+    MDBoxLayout:
+        size_hint_y: None
+        height: "60dp"
+        spacing: 10
+        padding: "10dp"
+
+        MDLabel:
+            text: "VENTA DE PRODUCTOS"
+            font_name: "Roboto_Mono_titulo"
+            font_size: "24sp"
+            halign: "left"
+            bold: True
+            theme_text_color: "Custom"
+            text_color: 0, 0.9, 0.6, 1
+
+        # Botón de actualización moderno
+        MDIconButton:
+            icon: "refresh"
+            icon_size: "26sp"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            md_bg_color: '#00C853'
+            radius: [20,]
+            pos_hint: {"center_y": 0.5}
+            on_release: root.verificar_actualizacion()
+
+        # Botón agregar producto
+        MDRaisedButton:
+            text: "+"
+            font_name: "Ancizar_botones"
+            font_size: "22sp"
+            md_bg_color: '#00C853'
+            text_color: 1, 1, 1, 1
+            pos_hint: {"center_y": 0.5}
+            on_release: root.agregar_producto()
+
+    # ---- BOTONES DE ACCIÓN ----
+    MDBoxLayout:
+        size_hint_y: None
+        height: "60dp"
+        spacing: 10
+
+        MDRaisedButton:
+            text: "Guardar Ganancia del Día"
+            font_name: "Ancizar_botones"
+            font_size: "18sp"
+            md_bg_color: '#00C853'
+            text_color: 1, 1, 1, 1
+            on_release: root.guardar_ganancia()
+
+        MDRaisedButton:
+            text: "Historial"
+            font_name: "Ancizar_botones"
+            font_size: "18sp"
+            md_bg_color: '#00C853'
+            text_color: 1, 1, 1, 1
+            on_release: root.mostrar_historial()
+
+    MDSeparator:
+        height: "1dp"
+
+    # ---- LISTA DE PRODUCTOS ----
+    ScrollView:
+        MDList:
+            id: productos_layout
+
+    # ---- TOTAL ABAJO ----
+    MDBoxLayout:
+        size_hint_y: None
+        height: "60dp"
+        md_bg_color: '#00C853'
+
+        MDLabel:
+            text: f"TOTAL DEL DÍA: {root.total:.2f} $"
+            font_name: "Ancizar_botones"
+            font_size: "18sp"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
