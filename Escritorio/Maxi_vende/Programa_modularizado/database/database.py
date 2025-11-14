@@ -1,5 +1,37 @@
+import os
 import sqlite3
 from datetime import datetime
+from kivy.app import App
+from kivy.resources import resource_find
+import shutil
+
+
+NOMBRE_DB = "konta_venta.db"
+
+
+def obtener_ruta_db():
+    # Busca el archivo dentro del APK
+    ruta_packaged = resource_find(f"database/{NOMBRE_DB}")
+
+    # Ruta donde Android permite escribir
+    ruta_usuario = os.path.join(App.get_running_app().user_data_dir, NOMBRE_DB)
+
+    # Si no existe en user_data_dir lo copiamos desde el APK
+    if not os.path.exists(ruta_usuario):
+        if ruta_packaged:
+            shutil.copy(ruta_packaged, ruta_usuario)
+        else:
+            # Crear DB vacía si no se encuentra
+            open(ruta_usuario, "w").close()
+
+    return ruta_usuario
+
+
+def conectar():
+    """Devuelve una conexión segura para Android y PC."""
+    ruta = obtener_ruta_db()
+    return sqlite3.connect(ruta)
+
 
 class RegistroVenta:
     def __init__(self, producto, precio, cantidad, fecha=None):
@@ -12,7 +44,7 @@ class RegistroVenta:
         self.anio = self.fecha.split("-")[0]
 
     def guardar(self):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS ventas (
@@ -29,14 +61,15 @@ class RegistroVenta:
             cursor.execute('''
                 INSERT INTO ventas (producto, precio, cantidad, fecha, total, mes, anio)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (self.producto, self.precio, self.cantidad, self.fecha, self.total, self.mes, self.anio))
+            ''', (self.producto, self.precio, self.cantidad,
+                  self.fecha, self.total, self.mes, self.anio))
             conn.commit()
 
 
 class ConsultaVentas:
     @staticmethod
     def obtener_resumen_mes(mes, anio):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT mes, anio, MAX(cantidad)
@@ -47,7 +80,7 @@ class ConsultaVentas:
 
     @staticmethod
     def obtener_totales_por_fecha(mes):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT fecha, SUM(precio * cantidad) AS total_ventas
@@ -60,7 +93,7 @@ class ConsultaVentas:
 
     @staticmethod
     def obtener_detalles_por_fecha(fecha):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT producto, cantidad, precio, total
@@ -71,7 +104,7 @@ class ConsultaVentas:
 
     @staticmethod
     def obtener_total_dia(fecha):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT SUM(precio * cantidad)
@@ -82,7 +115,7 @@ class ConsultaVentas:
 
     @staticmethod
     def obtener_cantidad_total_dia(fecha):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT SUM(cantidad)
@@ -96,14 +129,14 @@ class ConsultaHistorial:
 
     @staticmethod
     def obtener_meses_y_anios():
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT DISTINCT mes, anio FROM ventas ORDER BY anio DESC, mes DESC")
             return cursor.fetchall()
 
     @staticmethod
     def obtener_fechas_de_mes(mes, anio):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT DISTINCT fecha
@@ -115,7 +148,7 @@ class ConsultaHistorial:
 
     @staticmethod
     def obtener_detalles_de_fecha(fecha):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT producto, cantidad, precio, total
@@ -126,7 +159,7 @@ class ConsultaHistorial:
 
     @staticmethod
     def obtener_totales_de_fecha(fecha):
-        with sqlite3.connect("konta_venta.db") as conn:
+        with conectar() as conn:
             cursor = conn.cursor()
             cursor.execute("""
                 SELECT SUM(cantidad), SUM(total)
@@ -137,15 +170,12 @@ class ConsultaHistorial:
 
     @staticmethod
     def actualizar_producto_en_fecha(fecha, nombre_antiguo, nombre_nuevo, precio, cantidad):
-        conexion = sqlite3.connect("konta_venta.db")
-        cursor = conexion.cursor()
-        total = precio * cantidad
-        cursor.execute("""
-            UPDATE ventas
-            SET producto = ?, precio = ?, cantidad = ?, total = ?
-            WHERE fecha = ? AND producto = ?
-        """, (nombre_nuevo, precio, cantidad, total, fecha, nombre_antiguo))
-        
-        conexion.commit()
-        conexion.close()
-
+        with conectar() as conn:
+            cursor = conn.cursor()
+            total = precio * cantidad
+            cursor.execute("""
+                UPDATE ventas
+                SET producto = ?, precio = ?, cantidad = ?, total = ?
+                WHERE fecha = ? AND producto = ?
+            """, (nombre_nuevo, precio, cantidad, total, fecha, nombre_antiguo))
+            conn.commit()
