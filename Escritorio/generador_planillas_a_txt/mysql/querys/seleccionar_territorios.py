@@ -75,8 +75,13 @@ def mostrar_asignaciones_territorio(numero_territorio):
             conexion.close()
 
 if __name__ == "__main__":
-    num = input("Ingrese número del territorio a consultar: ")
-    if num.isdigit():
-        mostrar_asignaciones_territorio(int(num))
-    else:
-        print("❌ Debe ingresar un número válido.")
+    
+    while True:
+        num = input("Ingrese número del territorio a consultar (-1 para salir): ").strip()
+        if num == "-1":
+            print("Saliendo.")
+            break
+        if num.isdigit():
+            mostrar_asignaciones_territorio(int(num))
+        else:
+            print("❌ Debe ingresar un número válido o -1 para salir.")

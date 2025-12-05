@@ -26,7 +26,7 @@ def insertar_asignacion(territorio_num, nombre, fecha_asig, fecha_comp, alias):
         terr_id = obtener_id_territorio(territorio_num, cursor)
 
         sql = """
-        INSERT INTO Asignaciones (territorio_id, conductor, fecha_asig, fecha_comp, alias)
+        INSERT INTO Asignaciones (territorio_id, conductor_id, fecha_asignado, fecha_completado, cantidad_abarcado)
         VALUES (%s, %s, %s, %s, %s)
         """
         cursor.execute(sql, (terr_id, nombre, fecha_asig, fecha_comp, alias))
@@ -47,9 +47,8 @@ def insertar_asignacion(territorio_num, nombre, fecha_asig, fecha_comp, alias):
 # ----------------------------------------------------------------
 
 asignaciones = [
-    (41, 'Nahuel Benitez', '2023-03-19', '2023-03-24', 'Completo'),
-    (60, 'F. Israelson', '2023-12-31', '2024-01-07', 'a-c'),
-    (20, 'Joel Dominguez', '2024-06-09', '2024-06-15', 'a, b, d'),
+    (2, 'Ortiz Aureliano', '2025-11-16', '2025-11-17', '(b,c)'),
+    (2, 'Cristian Viera', '2025-11-30', '2025-12-02', 'Completo')
 ]
 
 for a in asignaciones:
