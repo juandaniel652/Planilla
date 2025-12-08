@@ -47,8 +47,8 @@ def insertar_asignacion(territorio_num, nombre, fecha_asig, fecha_comp, alias):
 # ----------------------------------------------------------------
 
 asignaciones = [
-    (2, 'Ortiz Aureliano', '2025-11-16', '2025-11-17', '(b,c)'),
-    (2, 'Cristian Viera', '2025-11-30', '2025-12-02', 'Completo')
+    (13, 'Jorge Cardozo', '2025-11-30', '2025-12-06', '(a-c)'),
+    
 ]
 
 for a in asignaciones:

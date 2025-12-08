@@ -84,7 +84,8 @@ def guardar_errores_csv():
 
 if __name__ == "__main__":
 
-    tuplas = [
+    tuplas = [(23, 'Luis Benitez', '2025-11-16', '2025-11-21', 'Completo'),
+              
         ]
 
     for numero, nombre, fecha_asig, fecha_comp, cantidad in tuplas:
