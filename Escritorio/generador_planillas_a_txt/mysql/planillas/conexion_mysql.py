@@ -1,10 +1,10 @@
-#Lleva los datos de la planilla ya convertidos a la base de datos MySQL
 import mysql.connector
 from datetime import datetime
 import re
 import csv
 
 errores = []
+asignaciones_pendientes = []   # ← Aquí se guardan los datos agregados desde afuera
 
 mapa_nombres = {
     r"^f\.?\s*israelson$": "Fernando Israelson",
@@ -29,9 +29,9 @@ conexion = mysql.connector.connect(
     database="Planillas",
     ssl_disabled=True
 )
-
-# ✅ Cursor buffered para evitar "Unread result"
 cursor = conexion.cursor(buffered=True)
+
+# ------------- FUNCIONES DE LA BASE ------------------
 
 def territorio_existe(numero):
     cursor.execute("SELECT id FROM Territorios WHERE numero = %s", (numero,))
@@ -82,13 +82,33 @@ def guardar_errores_csv():
             w.writerow(["territorio","nombre","fecha_asig","fecha_comp","motivo"])
             w.writerows(errores)
 
-if __name__ == "__main__":
+# -------------------------------------------------------
+# 🚀 NUEVO: FUNCIÓN PARA AÑADIR ASIGNACIONES DESDE AFUERA
+# -------------------------------------------------------
 
-    tuplas = [(23, 'Luis Benitez', '2025-11-16', '2025-11-21', 'Completo'),
-              
-        ]
+def agregar_asignacion(numero_territorio, conductor, fecha_asignado, fecha_completado, total_abarcado):
+    """
+    Guarda una asignación en la lista temporal para procesarla más tarde.
+    """
+    asignaciones_pendientes.append(
+        (numero_territorio, conductor, fecha_asignado, fecha_completado, total_abarcado)
+    )
 
-    for numero, nombre, fecha_asig, fecha_comp, cantidad in tuplas:
+
+# -------------------------------------------------------
+# 🚀 NUEVO: FUNCIÓN QUE PROCESA TODO
+# -------------------------------------------------------
+
+def procesar_asignaciones():
+    """
+    Procesa todas las asignaciones previamente agregadas con agregar_asignacion().
+    """
+
+    if not asignaciones_pendientes:
+        print("⚠️ No hay asignaciones para procesar.")
+        return
+
+    for numero, nombre, fecha_asig, fecha_comp, cantidad in asignaciones_pendientes:
 
         # --- Territorio ---
         terr_id = territorio_existe(numero)
@@ -103,7 +123,7 @@ if __name__ == "__main__":
             print(f"✅ Insertando conductor '{nombre_unificado}'")
             cond_id = insertar_conductor(nombre_unificado)
 
-        # --- Validar fechas ---
+        # --- Validación ---
         if not validar_fechas(fecha_asig, fecha_comp):
             motivo = "Fecha inválida o fecha_comp < fecha_asig"
             print(f"❌ {motivo} → {numero}, {nombre}, {fecha_asig} → {fecha_comp}")
@@ -114,9 +134,40 @@ if __name__ == "__main__":
         insertar_asignacion(terr_id, cond_id, fecha_asig, fecha_comp, cantidad)
         print(f"✅ Asignación insertada para territorio {numero}, conductor '{nombre_unificado}'")
 
-    # ✅ cerrar bien
+    guardar_errores_csv()
+    print("\n🚀 Proceso finalizado correctamente")
+
+    # Limpiar lista temporal después de procesar
+    asignaciones_pendientes.clear()
+
+
+# -----------------------------
+# Ejemplo de uso REAL
+# -----------------------------
+if __name__ == "__main__":
+
+    print("=== CARGA DE ASIGNACIONES ===")
+    cantidad = int(input("¿Cuántas asignaciones deseas ingresar?: "))
+
+    for i in range(cantidad):
+        print(f"\n--- Asignación {i+1} de {cantidad} ---")
+
+        numero_territorio = int(input("Número de territorio: "))
+        conductor = input("Nombre del conductor: ").strip()
+        fecha_asignado = input("Fecha asignado (YYYY-MM-DD): ").strip()
+        fecha_completado = input("Fecha completado (YYYY-MM-DD): ").strip()
+        total_abarcado = input("Total abarcado (Completo/Parcial/etc): ").strip()
+
+        agregar_asignacion(
+            numero_territorio,
+            conductor,
+            fecha_asignado,
+            fecha_completado,
+            total_abarcado
+        )
+
+    print("\nProcesando asignaciones...\n")
+    procesar_asignaciones()
+
     cursor.close()
     conexion.close()
-
-    guardar_errores_csv()
-    print("\n🚀 Proceso finalizado")
