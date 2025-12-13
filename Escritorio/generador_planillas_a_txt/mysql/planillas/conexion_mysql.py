@@ -156,7 +156,7 @@ if __name__ == "__main__":
         conductor = input("Nombre del conductor: ").strip()
         fecha_asignado = input("Fecha asignado (YYYY-MM-DD): ").strip()
         fecha_completado = input("Fecha completado (YYYY-MM-DD): ").strip()
-        total_abarcado = input("Total abarcado (Completo/Parcial/etc): ").strip()
+        total_abarcado = input("Total abarcado (Completo/a,b,c.../etc): ").strip()
 
         agregar_asignacion(
             numero_territorio,
