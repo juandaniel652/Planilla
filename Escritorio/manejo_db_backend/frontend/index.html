@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Manejo DB Backend</title>
+</head>
+<body>
+
+  <h2>Login</h2>
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Ingresar</button>
+
+  <hr>
+
+  <h2>Sumar</h2>
+  <input id="a" type="number" placeholder="A">
+  <input id="b" type="number" placeholder="B">
+  <button onclick="sumar()">Sumar</button>
+
+  <p id="resultado"></p>
+
+  <hr>
+
+  <h2>Historial</h2>
+  <button onclick="cargarHistorial()">Cargar historial</button>
+  <ul id="historial"></ul>
+
+  <script src="app.js"></script>
+</body>
+</html>

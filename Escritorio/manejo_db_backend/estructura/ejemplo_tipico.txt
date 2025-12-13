@@ -1,0 +1,18 @@
+/manejo_db_backend
+    ├─ backend/
+    │  ├─ package.json
+    │  ├─ .env.example
+    │  ├─ server.js
+    │  ├─ db/
+    │  │   └─ connection.js
+    │  ├─ routes/
+    │  │   ├─ calculos.js
+    │  │   └─ auth.js
+    │  ├─ middleware/
+    │  │   └─ auth.js
+    │  └─ migrations/
+    │      └─ init.sql
+   /frontend
+        index.html
+        styles.css
+        app.js
