@@ -2,6 +2,7 @@ import mysql.connector
 from datetime import datetime
 import re
 import csv
+from mysql.connector import Error
 
 errores = []
 asignaciones_pendientes = []   # ← Aquí se guardan los datos agregados desde afuera
@@ -171,3 +172,21 @@ if __name__ == "__main__":
 
     cursor.close()
     conexion.close()
+
+# -----------------------------
+# Ejemplo de uso desde API FastAPI, ESTO HACE QUE FUNCIONE
+# -----------------------------
+
+def conectar_db():
+    try:
+        conexion = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="miclave123",
+            database="Planillas",
+            ssl_disabled=True
+        )
+        return conexion
+    except Error as e:
+        print("Error al conectar a MySQL:", e)
+        raise
