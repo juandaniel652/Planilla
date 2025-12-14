@@ -76,6 +76,8 @@ def mostrar_asignaciones_territorio(numero_territorio):
 
 if __name__ == "__main__":
     
+    print("MYSQL - Consultar Asignaciones por Territorio (Funcional y pasa todos los datos bien)")
+    
     while True:
         num = input("Ingrese número del territorio a consultar (-1 para salir): ").strip()
         if num == "-1":
