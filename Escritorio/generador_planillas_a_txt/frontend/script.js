@@ -7,14 +7,8 @@ const consultarBtn = document.getElementById("consultarBtn");
 const resultadoDiv = document.getElementById("resultadoTerritorio");
 const territorioInput = document.getElementById("territorioInput");
 
-// URL base del backend
-const password = "hEqETD0V851JnBcB"
-const user = "postgres.qbpporkcnzredtedqwyx"
-const host = "aws-0-us-west-2.pooler.supabase.com"
-const port = 6543
-const database = "postgres"
 
-const BASE_URL = `postgresql+psycopg2://${user}:${password}@${host}:${port}/${database}`;
+const BASE_URL = "supabase.com/dashboard/project/qbpporkcnzredtedqwyx";
 
 // ===== Función para mostrar mensajes =====
 function mostrarMensaje(texto, tipo = "success") {
