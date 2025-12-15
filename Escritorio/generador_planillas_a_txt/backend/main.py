@@ -9,7 +9,7 @@ app = FastAPI()
 # Permitir solicitudes desde cualquier origen (para desarrollo)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # luego cambiar a tu frontend URL
+    allow_origins=["https://tu-proyecto.vercel.app"],  # luego cambiar a tu frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

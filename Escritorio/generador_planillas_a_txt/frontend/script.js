@@ -8,7 +8,13 @@ const resultadoDiv = document.getElementById("resultadoTerritorio");
 const territorioInput = document.getElementById("territorioInput");
 
 // URL base del backend
-const BASE_URL = "http://127.0.0.1:8000";
+const password = "hEqETD0V851JnBcB"
+const user = "postgres.qbpporkcnzredtedqwyx"
+const host = "aws-0-us-west-2.pooler.supabase.com"
+const port = 6543
+const database = "postgres"
+
+const BASE_URL = `postgresql+psycopg2://${user}:${password}@${host}:${port}/${database}`;
 
 // ===== Función para mostrar mensajes =====
 function mostrarMensaje(texto, tipo = "success") {
