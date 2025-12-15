@@ -56,9 +56,7 @@ def obtener_asignaciones(numero: int):
 #
 #
 #Frontend:
-#
-#cd frontend
-#python -m http.server 5501
+#cd frontend python -m http.server 5501
 #
 #
 #Abrí navegador:

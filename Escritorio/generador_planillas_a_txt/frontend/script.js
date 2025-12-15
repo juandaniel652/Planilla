@@ -1,3 +1,5 @@
+console.log("SCRIPT CARGADO - VERSION NUEVA");
+
 // ===== Obtener elementos del DOM =====
 const form = document.getElementById("asignacionForm");
 const mensaje = document.getElementById("mensaje");
@@ -30,10 +32,13 @@ async function consultarAsignaciones(numero) {
     return;
   }
 
+  console.log("URL llamada:", `${BASE_URL}/territorios/${numero}`);
+
+
   try {
-    const response = await fetch(
-      `${BASE_URL}/asignaciones/territorio/${numero}`
-    );
+   const response = await fetch(
+  `${BASE_URL}/territorios/${numero}`
+  );
 
     if (!response.ok) {
       throw new Error("Error HTTP " + response.status);
@@ -41,7 +46,7 @@ async function consultarAsignaciones(numero) {
 
     const data = await response.json();
 
-    if (!data.success || data.asignaciones.length === 0) {
+    if (!data.asignaciones || data.asignaciones.length === 0){
       resultadoDiv.innerHTML =
         "<p>No se encontraron asignaciones para este territorio.</p>";
       return;
