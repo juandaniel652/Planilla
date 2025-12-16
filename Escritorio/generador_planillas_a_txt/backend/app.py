@@ -2,18 +2,23 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from datetime import datetime
-from backend.database import engine
+from .database import engine
 
 app = FastAPI()
 
 # Permitir solicitudes desde cualquier origen (para desarrollo)
-app.add_middleware(
+app.add_middlewareapp.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://territorios-front-end.vercel.app"],  # luego cambiar a tu frontend URL
+    allow_origins=[
+        "https://territorios-front-end.vercel.app",
+        "http://127.0.0.1:5501",
+        "http://localhost:5501"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/territorios/{numero}")
 def obtener_asignaciones(numero: int):

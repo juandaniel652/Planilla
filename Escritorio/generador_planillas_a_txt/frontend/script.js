@@ -8,7 +8,7 @@ const resultadoDiv = document.getElementById("resultadoTerritorio");
 const territorioInput = document.getElementById("territorioInput");
 
 
-const BASE_URL = "supabase.com/dashboard/project/qbpporkcnzredtedqwyx";
+const BASE_URL = "https://backend-territorios.onrender.com";
 
 // ===== Función para mostrar mensajes =====
 function mostrarMensaje(texto, tipo = "success") {
