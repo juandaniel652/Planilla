@@ -1,0 +1,24 @@
+# Entorno virtual
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Variables de entorno
+.env
+
+# Logs
+*.log
+
+# Archivos generados / datos
+datos_en_formato_texto/
+datos_trabajados/
+errores/
+informe_errores.csv
+
+# Pruebas locales
+pruebas_locales/
+
+# SO
+.DS_Store

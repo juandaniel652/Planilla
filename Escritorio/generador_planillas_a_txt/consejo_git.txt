@@ -1,0 +1,8 @@
+A partir de ahora, cada vez que hagas cambios en el frontend, 
+trabajá en tu rama main o, mejor aún, crea ramas de features:
+
+git checkout -b mejoras-front
+# haces tus cambios
+git add .
+git commit -m "Agrego mejoras en el frontend"
+git push origin mejoras-front
